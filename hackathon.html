@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chat Interface</title>
+    <style>
+        .chat {
+            border: 20px solid #ffd9cc;
+            height: 400px;
+            padding: 10px;
+            overflow-y: scroll;
+        }
+        .response {
+            color: #6983ce;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat" id="chat">
+        <p>Welcome to the chatbot! Ask me anything...</p>
+    </div>
+    <input type="text" id="input" placeholder="Enter message...">
+    <button onclick="sendMessage()">↑</button>
+
+    <script>
+        var messages = [];
+        var lastResponseMessage = "";
+
+        function sendMessage() {
+            var input = document.getElementById("input");
+            var message = input.value;
+            if (message.toLowerCase() === "hello" || message.toLowerCase() === "hi" || message.toLowerCase() === "hey" || message.toLowerCase() === "hello!") {
+                messages.push({content: "Hello!", isResponse: true});
+                lastResponseMessage = "Hello!";
+            }
+            else if (message.toLowerCase() === "how are you doing today" || message.toLowerCase() === "how are you today" || message.toLowerCase() === "how are you" || message.toLowerCase() === "how are you doing today?") {
+                messages.push({content: "great :) how are you?", isResponse: true});
+                lastResponseMessage = "great :) how are you?";
+            }
+            else if (lastResponseMessage && lastResponseMessage.toLowerCase() === "great :) how are you?") {
+                messages.push({content: "That's so great to hear!", isResponse: true});
+                lastResponseMessage = "That's so great to hear!";
+            }
+            else if (message.toLowerCase() === "how old are you") {
+                messages.push({content: "I'm an AI chatbot, I don't have an age!", isResponse: true});
+                lastResponseMessage = "I'm an AI chatbot, I don't have an age!";
+            }
+            else if (message.toLowerCase() === "tell me a joke") {
+                messages.push({content: "why do chicken coops only have two doors?", isResponse: true});
+                lastResponseMessage = "why do chicken coops only have two doors?";
+            }
+            else if (lastResponseMessage && lastResponseMessage.toLowerCase() === "why do chicken coops only have two doors?" && message.toLowerCase() === "why") {
+                messages.push({content: "Because if they had four, they'd be a chicken sedan!", isResponse: true});
+                lastResponseMessage = "Because if they had four, they'd be a chicken sedan!";
+            }
+            else {
+                messages.push({content: message, isResponse: false});
+            }
+            input.value = "";
+            updateChat();
+        }
+
+        function updateChat() {
+            var chat = document.getElementById("chat");
+            var list = document.createElement("ul");
+            for (var i = 0; i < messages.length; i++) {
+                var message = messages[i];
+                var node = document.createElement("li");
+                if (message.isResponse && message.content) { 
+                    node.classList.add("response");
+                }
+                var textnode = document.createTextNode(message.content);
+                node.appendChild(textnode);
+                list.appendChild(node);
+            }
+            chat.innerHTML = "";
+            chat.appendChild(list);
+        }
+    </script>
+</body>
+</html>
